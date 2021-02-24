@@ -1,0 +1,63 @@
+﻿@page "/"
+@inject ServicioSingleton singleton
+@inject IRepositorio repositorio
+
+@*<p>Hola, @UtilidadesString.CaMayus(nombre)</p>
+
+    <p>Vamos a sumar 2 + 2 = @(2 + 2)</p>
+
+    <button @onclick="@ManejoClick">Presionar boton</button>*@
+<p>Singleton count: @singleton.Valor</p>
+
+<div>
+    <h3>
+        Peliculas
+    </h3>
+    <ListadoPeliculas Peliculas="Peliculas" />
+    @*<img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" alt="Cargando.." />*@
+
+</div>
+
+<div>
+    <h2>Crear nueva pelicula</h2>
+    <EjText placeholder="Nombre pelicula" disabled="true" />
+    <EjText />
+</div>
+
+<button @onclick="AgregarPelicula">Agregar pelicula</button>
+
+@code{
+    //string nombre = "Ivan";
+
+    //string CaMayus(string valor)
+    //{
+    //    return valor.ToLower();
+    //}
+
+    private List<Pelicula> Peliculas;
+
+    protected override void OnInitialized()
+    {
+        Peliculas = repositorio.ObtenerPeliculas();
+    }
+
+    void AgregarPelicula()
+    {
+        Peliculas.Add(new Pelicula() { Titulo = "Nueva pelicula", Lanzamiento = DateTime.Today });
+    }
+
+
+    //string CaMayus(string valor) => valor.ToUpper();
+    public Pelicula StarWars { get { return ObtenerPelicula(); } }
+
+    private Pelicula ObtenerPelicula()
+    {
+        return new Pelicula() { Titulo = "Star Wars", Lanzamiento = new DateTime(2020, 7, 2) };
+    }
+
+
+    private void ManejoClick()
+    {
+        Console.WriteLine("Me han clickeado desde un metodo");
+    }
+}
