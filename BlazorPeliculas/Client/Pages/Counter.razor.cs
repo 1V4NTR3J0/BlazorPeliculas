@@ -14,7 +14,7 @@ namespace BlazorPeliculas.Client.Pages
         [Inject] ServicioTransient transient { get; set; }
         [Inject] protected IJSRuntime JS { get; set; }
 
-        //IJSObjectReference modulo;
+        IJSObjectReference modulo;
 
         private int currentCount = 0;
         static int currentCountStatic = 0;
@@ -22,8 +22,8 @@ namespace BlazorPeliculas.Client.Pages
         [JSInvokable]
         public async Task IncrementCount()
         {
-            //modulo = await JS.InvokeAsync<IJSObjectReference>("import", "./js/CounterJS.js");
-            //await modulo.InvokeVoidAsync("mostrarAlerta", "Hola mundo");
+            modulo = await JS.InvokeAsync<IJSObjectReference>("import", "./js/CounterJS.js");
+            await modulo.InvokeVoidAsync("mostrarAlerta", "Hola mundo");
 
             currentCount++;
             singleton.Valor = currentCount;
