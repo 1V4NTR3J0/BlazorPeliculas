@@ -1,13 +1,14 @@
 ﻿@page "/"
 @inject ServicioSingleton singleton
 @inject IRepositorio repositorio
+@using static BlazorPeliculas.Client.Shared.MainLayout;
 
 @*<p>Hola, @UtilidadesString.CaMayus(nombre)</p>
 
     <p>Vamos a sumar 2 + 2 = @(2 + 2)</p>
 
     <button @onclick="@ManejoClick">Presionar boton</button>*@
-<p>Singleton count: @singleton.Valor</p>
+<p style="color: @appState.Color">Singleton count: @singleton.Valor</p>
 
 <div>
     <h3>
@@ -27,6 +28,7 @@
 <button @onclick="AgregarPelicula">Agregar pelicula</button>
 
 @code{
+    [CascadingParameter] private AppState appState { get; set; }
     //string nombre = "Ivan";
 
     //string CaMayus(string valor)
