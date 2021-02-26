@@ -1,30 +1,13 @@
 ﻿@inject IJSRuntime js
 
-<input type="checkbox" @bind="MostrarBotones" />
+<div style="display:flex; flex-wrap: wrap; align-items: center;">
+    <ListadoGenerico Listado="Peliculas">
+        <HayRegistros Context="peli">
+            <PeliculaInd Pelicula="peli" EliminarPelicula="EliminarPelicula" />
+        </HayRegistros>
+    </ListadoGenerico>
+</div>
 
-<ListadoGenerico Listado="Peliculas">
-    <HayRegistros Context="peli">
-        <PeliculaInd Pelicula="peli" EliminarPelicula="EliminarPelicula" MostrarBotones="MostrarBotones" />
-    </HayRegistros>
-</ListadoGenerico>
-
-<Confirmacion @ref="confirmacion" onConfirm="EliminarPeliculaConfirmacion" onCancel="onCancelConfirmacion">
-    <div>Desea borrar la pelicula</div>
-    </Confirmacion>
-
-
-@*@for (var i = 0; i < Peliculas.Count; i++)
-    {
-        <div>
-            @if (i == Peliculas.Count - 1)
-            {
-                <p>Esta es la ultima pelicula</p>
-            }
-            <p>@(i+1).- Titulo: @((MarkupString)@Peliculas[i].Titulo)</p>
-            <p>Fecha Lanzamiento: <b>@Peliculas[i].Lanzamiento.ToString("dd MM yyyy")</b></p>
-
-        </div>
-    }*@
 
 
 @code {
@@ -33,49 +16,14 @@
 
     [Parameter] public List<Pelicula> Peliculas { get; set; }
 
-    protected override void OnInitialized()
-    {
-        Console.WriteLine($"OnInitialized - cantidad de peliculas: {Peliculas.Count}");
-    }
-    protected override void OnParametersSet()
-    {
-        Console.WriteLine($"OnParametersSet  - cantidad de peliculas: {Peliculas.Count}");
-    }
-    protected override void OnAfterRender(bool firstRender)
-    {
-        Console.WriteLine($"OnAfterRender: primare vez: {firstRender}");
-    }
-    protected override bool ShouldRender()
-    {
-        Console.WriteLine("ShouldRender");
-        return true;
-    }
-
-    bool MostrarBotones = true;
-
     async Task EliminarPelicula(Pelicula peli)
     {
-        confirmacion.Mostrar();
-        peliculaABorrar = peli;
-        //var confirmado = await js.Confirm($"Desea borrar la pelicula {peli.Titulo}?");
-        //if (confirmado)
-        //{
-        //    Peliculas.Remove(peli);
-        //    Console.WriteLine($"Eliminando la pelicula {peli.Titulo}");
-        //}
-
-    }
-    Pelicula peliculaABorrar;
-    void EliminarPeliculaConfirmacion()
-    {
-        Peliculas.Remove(peliculaABorrar);
-        confirmacion.Ocultar();
-        peliculaABorrar = null;
+        var confirmado = await js.Confirm($"Desea borrar la pelicula {peli.Titulo}?");
+        if (confirmado)
+        {
+            Peliculas.Remove(peli);
+            Console.WriteLine($"Eliminando la pelicula {peli.Titulo}");
+        }
     }
 
-    void onCancelConfirmacion()
-    {
-        confirmacion.Ocultar();
-        peliculaABorrar = null;
-    }
 }

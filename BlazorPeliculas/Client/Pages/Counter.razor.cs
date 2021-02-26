@@ -9,12 +9,8 @@ using static BlazorPeliculas.Client.Shared.MainLayout;
 namespace BlazorPeliculas.Client.Pages
 {
     public partial class Counter
-    {
-
-        [Inject] ServicioSingleton singleton { get; set; }
-        [Inject] ServicioTransient transient { get; set; }
-        [Inject] protected IJSRuntime JS { get; set; }
-        [CascadingParameter] protected AppState appState { get; set; }
+    {               
+        [Inject] protected IJSRuntime JS { get; set; }        
        
 
         IJSObjectReference modulo;
@@ -28,9 +24,7 @@ namespace BlazorPeliculas.Client.Pages
             modulo = await JS.InvokeAsync<IJSObjectReference>("import", "./js/CounterJS.js");
             await modulo.InvokeVoidAsync("mostrarAlerta", "Hola mundo");
 
-            currentCount++;
-            singleton.Valor = currentCount;
-            transient.Valor = currentCount;
+            currentCount++;            
             currentCountStatic++;
             await JS.InvokeVoidAsync("pruebaPuntoNet");
         }
